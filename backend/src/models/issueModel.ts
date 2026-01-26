@@ -1,6 +1,6 @@
-import { IsURLOptions } from "express-validator/lib/options";
+
 import pool from "../config/database";
-import { Issue, IssueWithDetail, Comment, CommentWithUser } from "../types";
+import { Issue, IssueWithDetails, Comment, CommentWithUser } from "../types";
 
 export class IssueModel {
     static async create(
@@ -9,7 +9,7 @@ export class IssueModel {
         type: 'task' | 'bug' | 'story',
         priority: 'low' | 'medium' | 'high',
         preporterId: number,
-        assgineeId: number
+        assgineeId: number | null
     ): Promise<Issue> {
         const result = await pool.query(`INSERT INTO issues (project_id, issue_key, issue_name, issue_description, issue_type, issue_priority, reporter_id, assignee_id) 
                                                      VALUES ($1,$2, $3, $4, $5, $6, $7, $8) RETURNING *`,
@@ -22,11 +22,11 @@ export class IssueModel {
         return result.rows[0] || null;
     }
 
-    static async findByIdWithDetails(issueId: number): Promise<IssueWithDetail | null> {
-        const result = await pool.query(`SELECT i*, reporter.user_name as reporter_name,
-                                                    reporter.user_email as reporter_email,
-                                                    assignee.user_name as assignee_name,
-                                                    assignee.user_email as assignee_email 
+    static async findByIdWithDetails(issueId: number): Promise<IssueWithDetails | null> {
+        const result = await pool.query(`SELECT i.*, u.user_name as reporter_name,
+                                                     u.user_email as reporter_email,
+                                                     a.user_name as assignee_name,
+                                                     a.user_email as assignee_email 
                                         FROM issues i JOIN users u ON i.reporter_id=u.user_id
                                                       LEFT JOIN users a ON i.assignee_id=a.user_id 
                                         WHERE i.issue_id = $1`, [issueId]);
@@ -38,14 +38,14 @@ export class IssueModel {
         return result.rowCount !== null && result.rowCount > 0;
     }
 
-    static async findByProjectId(projectId: number): Promise<IssueWithDetail[]> {
-        const result = await pool.query(`SELECT i*, reporter.user_name as reporter_name,
-                                                    reporter.user_email as reporter_email,
-                                                    assignee.user_name as assignee_name,
-                                                    assignee.user_email as assignee_email 
+    static async findByProjectId(projectId: number): Promise<IssueWithDetails[]> {
+        const result = await pool.query(`SELECT i.*, u.user_name as reporter_name,
+                                                    u.user_email as reporter_email,
+                                                    a.user_name as assignee_name,
+                                                    a.user_email as assignee_email 
                                         FROM issues i JOIN users u ON i.reporter_id=u.user_id
                                                       LEFT JOIN users a ON i.assignee_id=a.user_id 
-                                        WHERE i.issue_id = $1
+                                        WHERE i.project_id = $1
                                         ORDER BY i.issue_created_at DESC`, [projectId]);
         return result.rows;
 
@@ -65,7 +65,7 @@ export class IssueModel {
             description?: string | null;
             type?: 'task' | 'bug' | 'story';
             priority?: 'low' | 'medium' | 'high';
-            status?: 'todo' | 'improcess' | 'done';
+            status?: 'todo' | 'in_process' | 'done';
             assigneeId?: number | null;
         }
     ): Promise<Issue | null> {
@@ -136,7 +136,7 @@ export class IssueModel {
                                               JOIN users u ON c.user_id = u.user_id
                                       WHERE c.issue_id = $1
                                       ORDER BY c.comment_created_at ASC`, [issueId]);
-        return result.rows[0];
+        return result.rows;
     }
 
     static async findCommentById(commentId: number): Promise<Comment | null> {

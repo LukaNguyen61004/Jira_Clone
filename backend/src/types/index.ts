@@ -1,4 +1,4 @@
-import { executionAsyncId } from "node:async_hooks";
+
 
 //User
 export interface User {
@@ -112,7 +112,7 @@ export interface Issue {
   issue_name: string;
   issue_description: string | null;
   issue_type: 'task' | 'bug' | 'story';
-  issue_status: 'todo' | 'inprocess' | 'done';
+  issue_status: 'todo' | 'in_process' | 'done';
   issue_priority: 'low' | 'medium' | 'high';
   reporter_id: number;
   assignee_id: number | null;
@@ -120,14 +120,14 @@ export interface Issue {
   issue_updated_at: Date;
 }
 
-export interface IssueWithDetail {
+export interface IssueWithDetails {
   issue_id: number;
   project_id: number;
   issue_key: string;
   issue_name: string;
   issue_description: string | null;
   issue_type: 'task' | 'bug' | 'story';
-  issue_status: 'todo' | 'inprocess' | 'done';
+  issue_status: 'todo' | 'in_process' | 'done';
   issue_priority: 'low' | 'medium' | 'high';
   reporter_id: number;
   reporter_name: string;
@@ -144,7 +144,7 @@ export interface CreateIssueRequest {
   description?: string;
   type: 'task' | 'bug' | 'story';
   priority?: 'low' | 'medium' | 'high';
-  assignee_id?: number;
+  assigneeId?: number;
 }
 
 export interface UpdateIssueRequest {
@@ -152,8 +152,8 @@ export interface UpdateIssueRequest {
   description?: string;
   type?: 'task' | 'bug' | 'story';
   priority?: 'low' | 'medium' | 'high';
-  status?: 'todo' | 'inprocess' | 'done';
-  assignee_id?: number | null; //null = unassign
+  status?: 'todo' | 'in_process' | 'done';
+  assigneeId?: number | null; //null = unassign
 }
 
 //Comment
@@ -172,7 +172,7 @@ export interface CommentWithUser {
   user_id: number;
   user_name: string;
   user_email: string;
-  user_avarta_url: string | null;
+  user_avatar_url: string | null;
   issue_id: number;
   comment_content: string;
   comment_created_at: Date;
