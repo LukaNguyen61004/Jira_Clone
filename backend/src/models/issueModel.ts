@@ -9,11 +9,13 @@ export class IssueModel {
         type: 'task' | 'bug' | 'story',
         priority: 'low' | 'medium' | 'high',
         preporterId: number,
-        assgineeId: number | null
+        assgineeId: number | null,
+        epicId: number | null,
+        sprintId: number | null
     ): Promise<Issue> {
-        const result = await pool.query(`INSERT INTO issues (project_id, issue_key, issue_name, issue_description, issue_type, issue_priority, reporter_id, assignee_id) 
-                                                     VALUES ($1,$2, $3, $4, $5, $6, $7, $8) RETURNING *`,
-            [projectId, issueKey, name, description, type, priority, preporterId, assgineeId]);
+        const result = await pool.query(`INSERT INTO issues (project_id, issue_key, issue_name, issue_description, issue_type, issue_priority, reporter_id, assignee_id,epic_id, sprint_id) 
+                                                     VALUES ($1,$2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
+            [projectId, issueKey, name, description, type, priority, preporterId, assgineeId, epicId, sprintId]);
         return result.rows[0];
     }
 
@@ -26,9 +28,15 @@ export class IssueModel {
         const result = await pool.query(`SELECT i.*, u.user_name as reporter_name,
                                                      u.user_email as reporter_email,
                                                      a.user_name as assignee_name,
-                                                     a.user_email as assignee_email 
+                                                     a.user_email as assignee_email,
+                                                     e.epic_name,
+                                                     e.epic_color,
+                                                     s.sprint_name,
+                                                     s.sprint_status
                                         FROM issues i JOIN users u ON i.reporter_id=u.user_id
-                                                      LEFT JOIN users a ON i.assignee_id=a.user_id 
+                                                      LEFT JOIN users a ON i.assignee_id=a.user_id
+                                                      LEFT JOIN epics e ON i.epic_id= e.epic_id
+                                                      LEFT JOIN sprint s ON i.sprint_id = s.sprint_id 
                                         WHERE i.issue_id = $1`, [issueId]);
         return result.rows[0] || null;
     }
@@ -42,9 +50,15 @@ export class IssueModel {
         const result = await pool.query(`SELECT i.*, u.user_name as reporter_name,
                                                     u.user_email as reporter_email,
                                                     a.user_name as assignee_name,
-                                                    a.user_email as assignee_email 
+                                                    a.user_email as assignee_email,
+                                                    e.epic_name,
+                                                    e.epic_color,
+                                                    s.sprint_name,
+                                                    s.sprint_status
                                         FROM issues i JOIN users u ON i.reporter_id=u.user_id
                                                       LEFT JOIN users a ON i.assignee_id=a.user_id 
+                                                      LEFT JOIN epics e ON i.epic_id = e.epic_id
+                                                      LEFT JOIN sprints s ON i.sprint_id = s.sprint_id
                                         WHERE i.project_id = $1
                                         ORDER BY i.issue_created_at DESC`, [projectId]);
         return result.rows;
@@ -65,8 +79,10 @@ export class IssueModel {
             description?: string | null;
             type?: 'task' | 'bug' | 'story';
             priority?: 'low' | 'medium' | 'high';
-            status?: 'todo' | 'in_process' | 'done';
+            status?: 'todo' | 'in_process' | "in_review" | 'done';
             assigneeId?: number | null;
+            epicId?: number | null;
+            sprintId?: number | null;
         }
     ): Promise<Issue | null> {
         const updates: string[] = [];
@@ -107,6 +123,19 @@ export class IssueModel {
         if (data.assigneeId !== undefined) {
             updates.push(`assignee_id = $${paramCount}`);
             values.push(data.assigneeId);
+            paramCount++;
+        }
+
+        if (data.epicId !== undefined) {
+            updates.push(`epic_id = $${paramCount}`);
+            values.push(data.epicId);
+            paramCount++;
+        }
+
+        
+        if (data.sprintId !== undefined) {
+            updates.push(`sprint_id = $${paramCount}`);
+            values.push(data.sprintId);
             paramCount++;
         }
 

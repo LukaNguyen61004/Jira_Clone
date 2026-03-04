@@ -5,6 +5,10 @@ import cookieParse from 'cookie-parser';
 import authRoutes from './routes/authRoutes';
 import projectRoutes from './routes/projectRoutes';
 import issueRoutes from './routes/issueRoutes';
+import epicRoutes from './routes/epicRoutes';      
+import sprintRoutes from './routes/sprintRoutes'; 
+import notificationRoutes from './routes/notificationRoutes';
+import invitationRoutes from './routes/invitationRoutes';
 import pool from './config/database';
 
 dotenv.config();
@@ -19,6 +23,10 @@ app.use(cookieParse());
 app.use('/api/auth',authRoutes);
 app.use('/api/projects',projectRoutes);
 app.use('/api',issueRoutes);
+app.use('/api', epicRoutes);     
+app.use('/api', sprintRoutes);
+app.use('/api/notifications', notificationRoutes);
+app.use('/api',invitationRoutes);
 
 
 app.get('/api/health', (req: Request, res: Response) => {

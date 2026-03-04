@@ -74,7 +74,7 @@ export class ProjectModel {
     }
 
     static async getMembers(projectId: number): Promise<ProjectMemberWithUser[]> {
-        const result = await pool.query(`SELECT u.user_id, u.user_name, u.user_email, u.user_avartar_url, pm.role, pm.joined_at
+        const result = await pool.query(`SELECT u.user_id, u.user_name, u.user_email, u.user_avatar_url, pm.role, pm.joined_at
                                        FROM project_members pm JOIN users u ON pm.user_id= u.user_id
                                        WHERE pm.project_id = $1
                                        ORDER BY pm.joined_at ASC`, [projectId]);
