@@ -304,7 +304,6 @@ export interface NotificationWithMeta extends Notification{
 
 
 //invitation
-
 export interface ProjectInvitation {
   invitation_id: number;
   project_id: number;

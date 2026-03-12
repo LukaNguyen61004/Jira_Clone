@@ -48,8 +48,7 @@ export const validateLogin = [
   validate
 ];
 
-//validate Project
-
+// Project
 export const validateCreateProject = [
   body('name')
     .trim()
@@ -180,7 +179,7 @@ export const validateUpdateIssue = [
   body('assigneeId')
     .optional({ nullable: true })
     .custom((value) => {
-      if (value === null) return true; // Allow null for unassign
+      if (value === null) return true; 
       if (typeof value === 'number' && value > 0) return true;
       throw new Error('Assignee ID must be a positive integer or null');
     }),
@@ -202,7 +201,7 @@ export const validateUpdateIssue = [
     }),
 
 
-  // Phải có ít nhất 1 field để update
+  // At least 1 field updated
   body().custom((value, { req }) => {
     const fields = ['name', 'description', 'type', 'status', 'priority', 'assigneeId'];
     const hasField = fields.some(field => req.body[field] !== undefined);
@@ -223,7 +222,7 @@ export const validateIssueId = [
   validate
 ];
 
-// Validate Project ID param (for issue routes)
+// Validate Project ID param 
 export const validateProjectIdParam = [
   param('projectId')
     .isInt({ min: 1 }).withMessage('Project ID must be a positive integer'),
@@ -232,7 +231,6 @@ export const validateProjectIdParam = [
 ];
 
 //Comment
-
 export const validateCreateComment = [
   body('content')
     .trim()
@@ -269,7 +267,6 @@ export const validateCreateEpic = [
   validate
 ];
 
-// Validate Update Epic
 export const validateUpdateEpic = [
   body('name')
     .optional()
