@@ -3,6 +3,7 @@ import {
     DialogContent,
     DialogHeader,
     DialogTitle,
+    DialogDescription
 } from "../../components/ui/dialog"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
@@ -31,6 +32,7 @@ export default function CreateProjectModal ({open, onClose}: Props){
         <DialogContent>
         <DialogHeader>
             <DialogTitle>Create Project</DialogTitle>
+            <DialogDescription>Fill in the details to create a new project</DialogDescription>
         </DialogHeader>
           <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Project name" />
           <input value={key} onChange={(e) => setKey(e.target.value)} placeholder="Project key" />
