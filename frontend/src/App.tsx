@@ -2,7 +2,9 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
 import ProjectsPage from './pages/projects/ProjectsPage';
+import ProjectDetailPage from './pages/projects/ProjectDetailPage';
 import ProtectedRoute from './components/common/ProtectedRoute';
+import ProjectedRoute from './components/common/ProtectedRoute';
 function App() {
 
 
@@ -16,6 +18,11 @@ function App() {
           <ProtectedRoute>
             <ProjectsPage />
           </ProtectedRoute>
+        } />
+        <Route path="/projects/:id" element={
+            <ProjectedRoute>
+              <ProjectDetailPage />
+            </ProjectedRoute>
         } />
       </Routes>
     </BrowserRouter>
