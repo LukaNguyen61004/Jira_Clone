@@ -17,14 +17,14 @@ const COLUMNS = [
 
 export default function BoardPage() {
   const { id } = useParams();
-  const projectId = Number(id);
+  const projectId = Number(id); // llay id tu URL 
 
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient(); // dung de refesh sau khi dropping
 
   const { data, isLoading } = useQuery({
     queryKey: ["issues", projectId],
     queryFn: () => issueApi.getProjectIssues(projectId)
-  });
+  }); // dung de cache du lieu tu API backend, dung hook useQuery
 
   const issues = data?.issues ?? [];
 
@@ -37,7 +37,7 @@ export default function BoardPage() {
         queryKey: ["issues", projectId]
       });
     }
-  });
+  }); // dung useMutation cho cac PUT/ POST/ DELETE
 
   const handleDragEnd = async (result: DropResult) => {
     const { draggableId, destination } = result;
