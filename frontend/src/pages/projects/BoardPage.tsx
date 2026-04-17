@@ -1,4 +1,5 @@
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
+import { useState } from 'react';
 import { useParams } from "react-router-dom";
 import { issueApi } from "@/api/issueApi";
 import {
@@ -7,6 +8,7 @@ import {
   Draggable,
 } from "@hello-pangea/dnd";
 import type { DropResult } from "@hello-pangea/dnd";
+import IssueDetailModal from "./IssueDetailModal";
 
 const COLUMNS = [
   { id: "todo", label: "TODO" },
@@ -17,9 +19,10 @@ const COLUMNS = [
 
 export default function BoardPage() {
   const { id } = useParams();
-  const projectId = Number(id); // llay id tu URL 
+  const projectId = Number(id); // lay id tu URL 
 
   const queryClient = useQueryClient(); // dung de refesh sau khi dropping
+  const [selectedIssueId, setSelectedIssueId] = useState<number | null>(null);
 
   const { data, isLoading } = useQuery({
     queryKey: ["issues", projectId],
@@ -48,6 +51,7 @@ export default function BoardPage() {
       id: Number(draggableId),
       status: destination.droppableId
     })
+
 
   };
 
@@ -95,6 +99,7 @@ export default function BoardPage() {
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
+                            onClick={() => setSelectedIssueId(issue.issue_id)}
                             className="bg-white border rounded-lg p-3 shadow-sm cursor-pointer hover:shadow-md"
                           >
                             <p className="text-sm font-medium mb-1">
@@ -108,10 +113,10 @@ export default function BoardPage() {
 
                               <span
                                 className={`text-xs px-2 py-0.5 rounded-full ${issue.issue_priority === "high"
-                                    ? "bg-red-100 text-red-600"
-                                    : issue.issue_priority === "medium"
-                                      ? "bg-yellow-100 text-yellow-600"
-                                      : "bg-green-100 text-green-600"
+                                  ? "bg-red-100 text-red-600"
+                                  : issue.issue_priority === "medium"
+                                    ? "bg-yellow-100 text-yellow-600"
+                                    : "bg-green-100 text-green-600"
                                   }`}
                               >
                                 {issue.issue_priority}
@@ -131,6 +136,15 @@ export default function BoardPage() {
           );
         })}
       </div>
+       {selectedIssueId && (
+        <IssueDetailModal
+          open={!!selectedIssueId}
+          onClose={() => setSelectedIssueId(null)}
+          issueId={selectedIssueId}
+          
+        />
+      )}
     </DragDropContext>
+    
   );
 }

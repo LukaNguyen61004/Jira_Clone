@@ -42,7 +42,5 @@ export default function CreateProjectModal ({open, onClose}: Props){
                 </Button>
         </DialogContent>
     </Dialog>
-    
-    
    )
 }

@@ -1,14 +1,15 @@
 import { Navigate } from "react-router-dom";
 import { useAuthStore } from "../../stores/authStore";
-import { useInitAuth } from "../../hooks/useInitAuth";
+
 
 interface Props {
     children: React.ReactNode;
+    isLoading: boolean;
 }
 
-export default function ProjectedRoute({ children }: Props) {
+export default function ProtectedRoute({ children , isLoading}: Props) {
     const { isAuthenticated } = useAuthStore();
-    const { isLoading } = useInitAuth();
+   
 
     if (isLoading) return (
         <div className="min-h-screen flex items-center justify-center">

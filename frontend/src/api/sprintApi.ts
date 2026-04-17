@@ -7,6 +7,11 @@ export const sprintApi ={
         return response.data;
     },
 
+    createSprint: async ( projectId: number, data: {name: string; goal?: string, startDate?: string, endDate?: string})=>{
+        const response= await api.post(`/projects/${projectId}/sprints`,data);
+        return response.data;
+    },
+
     startSprint: async(sprintId: number)=>{
         const response= await api.patch(`/sprints/${sprintId}/start`);
         return response.data;
@@ -16,4 +21,5 @@ export const sprintApi ={
         const response =await api.patch(`/sprints/${sprintId}/complete`);
         return response.data;
     }
+
 }

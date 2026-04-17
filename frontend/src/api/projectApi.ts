@@ -10,6 +10,11 @@ export const projectApi={
         const response =await api.get(`/projects/${id}`);
         return response.data;
     },
+
+    getProjectMembers: async(id:number)=>{
+        const response= await api.get(`/projects/${id}/members`);
+        return response.data;
+    },
     
     createProject: async (data: {name: string, key: string, description?:string})=>{
         const response=await api.post('/projects',data);

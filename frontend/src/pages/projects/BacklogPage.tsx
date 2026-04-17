@@ -4,6 +4,7 @@ import { sprintApi } from "@/api/sprintApi";
 import { issueApi } from "@/api/issueApi";
 import { useParams } from "react-router-dom";
 import CreateIssueModal from "./CreateIssueModal";
+import IssueDetailModal from "./IssueDetailModal";
 
 export default function BacklogPage() {
     const { id } = useParams();
@@ -11,6 +12,8 @@ export default function BacklogPage() {
 
     const queryClient = useQueryClient();
     const [openModal, setOpenModal] = useState(false);
+
+    const [selectedIssueId, setSelectedIssueId] = useState<number | null>(null);
     const { data: dataSprint, isLoading: isLoadingSprint } = useQuery(
         {
             queryKey: ["sprint", projectId],
@@ -62,8 +65,8 @@ export default function BacklogPage() {
                             <div className="flex items-center gap-3">
                                 <h3 className="font-semibold text-gray-800">{sprint.sprint_name}</h3>
                                 <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${sprint.sprint_status === 'active'
-                                        ? 'bg-green-100 text-green-700'
-                                        : 'bg-gray-200 text-gray-600'
+                                    ? 'bg-green-100 text-green-700'
+                                    : 'bg-gray-200 text-gray-600'
                                     }`}>
                                     {sprint.sprint_status}
                                 </span>
@@ -104,8 +107,8 @@ export default function BacklogPage() {
                                             <span className="text-sm text-gray-800">{issue.issue_name}</span>
                                         </div>
                                         <span className={`text-xs px-2 py-0.5 rounded-full ${issue.issue_priority === 'high' ? 'bg-red-100 text-red-600' :
-                                                issue.issue_priority === 'medium' ? 'bg-yellow-100 text-yellow-600' :
-                                                    'bg-green-100 text-green-600'
+                                            issue.issue_priority === 'medium' ? 'bg-yellow-100 text-yellow-600' :
+                                                'bg-green-100 text-green-600'
                                             }`}>
                                             {issue.issue_priority}
                                         </span>
@@ -135,14 +138,16 @@ export default function BacklogPage() {
                     ) : (
                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         backlogIssues.map((issue: any) => (
-                            <div key={issue.issue_id} className="flex items-center justify-between px-4 py-3 hover:bg-gray-50">
+                            <div key={issue.issue_id}
+                                onClick={() => setSelectedIssueId(issue.issue_id)}
+                                className="flex items-center justify-between px-4 py-3 hover:bg-gray-50">
                                 <div className="flex items-center gap-3">
                                     <span className="text-xs text-gray-400 w-16">{issue.issue_key}</span>
                                     <span className="text-sm text-gray-800">{issue.issue_name}</span>
                                 </div>
                                 <span className={`text-xs px-2 py-0.5 rounded-full ${issue.issue_priority === 'high' ? 'bg-red-100 text-red-600' :
-                                        issue.issue_priority === 'medium' ? 'bg-yellow-100 text-yellow-600' :
-                                            'bg-green-100 text-green-600'
+                                    issue.issue_priority === 'medium' ? 'bg-yellow-100 text-yellow-600' :
+                                        'bg-green-100 text-green-600'
                                     }`}>
                                     {issue.issue_priority}
                                 </span>
@@ -156,6 +161,14 @@ export default function BacklogPage() {
                 onClose={() => setOpenModal(false)}
                 projectId={projectId}
             />
+            {selectedIssueId && (
+                <IssueDetailModal
+                    open={!!selectedIssueId}
+                    onClose={() => setSelectedIssueId(null)}
+                    issueId={selectedIssueId}
+                    
+                />
+            )}
         </div>
 
     );
