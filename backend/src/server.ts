@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors({
   origin: ['http://localhost:5173',
-           'https://jira-clone-zeta-lovat.vercel.app/'],
+           'https://jira-clone-zeta-lovat.vercel.app'],
   credentials: true
 }));
 app.use(express.json());
