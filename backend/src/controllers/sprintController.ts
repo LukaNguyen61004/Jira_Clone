@@ -200,7 +200,7 @@ export class SprintController {
                 return res.status(400).json({ error: 'Invalid sprint ID' });
             }
 
-            const { moveToSprintId } = req.body;
+            const { moveToSprintId } = req.body ?? {};
 
             const result = await SprintService.completeSprint(
                 sprintId,

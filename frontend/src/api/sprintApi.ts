@@ -13,12 +13,12 @@ export const sprintApi ={
     },
 
     startSprint: async(sprintId: number)=>{
-        const response= await api.patch(`/sprints/${sprintId}/start`);
+        const response= await api.post(`/sprints/${sprintId}/start`);
         return response.data;
     },
 
     completeSprint:async(sprintId: number)=>{
-        const response =await api.patch(`/sprints/${sprintId}/complete`);
+        const response =await api.post(`/sprints/${sprintId}/complete`,{});
         return response.data;
     }
 

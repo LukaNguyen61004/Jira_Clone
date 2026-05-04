@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import redis from './config/redis'
 import cookieParse from 'cookie-parser';
 import authRoutes from './routes/authRoutes';
 import projectRoutes from './routes/projectRoutes';
@@ -53,6 +54,13 @@ app.get('/api/db-test', async (req: Request, res: Response) => {
     });
   }
 });
+
+redis.ping().then((result) => {
+  console.log('Redis ping:', result);
+
+}).catch((err) => {
+  console.error('Redis ping failed:', err);
+})
 
 
 app.listen(PORT, () => {

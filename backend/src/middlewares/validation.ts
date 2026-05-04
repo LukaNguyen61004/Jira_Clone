@@ -203,7 +203,7 @@ export const validateUpdateIssue = [
 
   // At least 1 field updated
   body().custom((value, { req }) => {
-    const fields = ['name', 'description', 'type', 'status', 'priority', 'assigneeId'];
+    const fields = ['name', 'description', 'type', 'status', 'priority', 'assigneeId', 'sprintId', 'epicId'];
     const hasField = fields.some(field => req.body[field] !== undefined);
     if (!hasField) {
       throw new Error('At least one field is required to update');

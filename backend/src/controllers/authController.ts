@@ -45,7 +45,8 @@ export class AuthController {
 
             res.json({
                 message: 'Login successful',
-                user
+                user,
+                token
             });
 
         } catch (error) {

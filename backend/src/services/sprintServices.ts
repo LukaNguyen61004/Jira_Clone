@@ -230,8 +230,8 @@ export class SprintService {
             throw new Error('Only project admin can delete sprint');
         }
 
-        if (sprint.sprint_status === 'active') {
-            throw new Error('Cannot delete active sprint. Please complete it first.');
+        if (sprint.sprint_status !== 'planned') {
+            throw new Error('Only planned sprints can be deleted.');
         }
 
         const deleted = await SprintModel.delete(sprintId);

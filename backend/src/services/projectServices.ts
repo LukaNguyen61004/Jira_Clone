@@ -1,6 +1,7 @@
 import { ProjectModel } from "../models/projectModel";
 import { UserModel } from "../models/userModel";
 import { CreatedProjectRequest, UpdateProjectRequest, Project, ProjectMemberWithUser, ProjectWithDetails } from "../types";
+import  {setCache, getCache, deleteCache, deleteCachePattern} from '../utils/cache'
 
 export class ProjectService {
     static async createProject(userId: number, data: CreatedProjectRequest): Promise<ProjectWithDetails> {
@@ -31,7 +32,10 @@ export class ProjectService {
     }
 
     static async getUserProjects(userId: number): Promise<ProjectWithDetails[]> {
-        return await ProjectModel.findByUserId(userId);
+       
+        const projects= await ProjectModel.findByUserId(userId);
+
+        return projects;
     }
 
     static async getProjectById(projectId: number, userId: number): Promise<ProjectWithDetails> {

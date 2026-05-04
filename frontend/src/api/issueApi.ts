@@ -11,7 +11,7 @@ export const issueApi = {
         return response.data;
     },
 
-    updateIssues: async (issueId: number, data: { status?: string; assigneeId?: number | null }) => {
+    updateIssues: async (issueId: number, data: { status?: string; assigneeId?: number | null, sprintId?:number | null }) => {
         const response = await api.put(`/issues/${issueId}`, data);
         return response.data;
     },

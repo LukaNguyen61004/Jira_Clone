@@ -18,8 +18,7 @@ router.get('/sprints/:id', validateSprintId, SprintController.getSprintById);
 router.put('/sprints/:id', validateSprintId, validateUpdateSprint, SprintController.updateSprint);
 
 
-router.post(
-  '/sprints/:id/start', validateSprintId, SprintController.startSprint);
+router.post('/sprints/:id/start', validateSprintId, SprintController.startSprint);
 
 router.post('/sprints/:id/complete', validateSprintId, validateCompleteSprint, SprintController.completeSprint);
 

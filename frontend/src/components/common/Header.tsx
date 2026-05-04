@@ -1,5 +1,6 @@
 import { useAuthStore } from "@/stores/authStore";
 import { authApi } from "@/api/authApi";
+import Notification from "./NotificationBell";
 import { useNavigate, Link } from "react-router-dom";
 
 
@@ -24,6 +25,7 @@ export default function Header() {
             </Link>
 
             <div className="flex items-center gap-3">
+                <Notification />
               
                 <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-medium">
                     {user?.user_name.charAt(0).toUpperCase()}
