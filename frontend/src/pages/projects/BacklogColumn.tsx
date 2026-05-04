@@ -6,10 +6,9 @@ type Props = {
   issues: any[];
   onCreateIssue: () => void;
   onCreateSprint: () => void;
-  onSelectIssue?: (id: number) => void;
 };
 
-export default function BacklogColumn({ issues, onCreateIssue, onCreateSprint, onSelectIssue }: Props) {
+export default function BacklogColumn({ issues, onCreateIssue, onCreateSprint}: Props) {
   const { setNodeRef } = useDroppable({
     id: "backlog",
   });
