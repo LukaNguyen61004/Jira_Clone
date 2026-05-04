@@ -6,9 +6,10 @@ type Props = {
   issues: any[];
   onCreateIssue: () => void;
   onCreateSprint: () => void;
+  onSelectIssue?: (id: number) => void;
 };
 
-export default function BacklogColumn({ issues, onCreateIssue, onCreateSprint}: Props) {
+export default function BacklogColumn({ issues, onCreateIssue, onCreateSprint, onSelectIssue }: Props) {
   const { setNodeRef } = useDroppable({
     id: "backlog",
   });
@@ -46,7 +47,7 @@ export default function BacklogColumn({ issues, onCreateIssue, onCreateSprint}: 
           </p>
         ) : (
           issues.map((issue: Issue) => (
-            <IssueItem key={issue.issue_id} issue={issue} />
+            <IssueItem key={issue.issue_id} issue={issue} onClick={() => onSelectIssue?.(issue.issue_id)}/>
           ))
         )}
       </div>

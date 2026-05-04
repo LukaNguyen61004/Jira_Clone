@@ -94,7 +94,7 @@ export default function BacklogPage() {
         } else if (overId === "backlog") {
             sprint_id = null;
         } else {
-            return; // ❗ IMPORTANT: ignore invalid drop
+            return; 
         }
 
         updateIssueMutation.mutate({

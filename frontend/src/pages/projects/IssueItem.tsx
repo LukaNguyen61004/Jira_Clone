@@ -1,6 +1,13 @@
 import { useDraggable } from "@dnd-kit/core";
+import type { Issue } from "@/types";
+
+ type Props = {
+  issue: Issue;
+  onClick?: () => void;
+};
+
 //eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function IssueItem({ issue }: any) {
+export default function IssueItem({ issue, onClick }: Props) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: issue.issue_id,
   });
@@ -17,6 +24,7 @@ export default function IssueItem({ issue }: any) {
       {...listeners}
       {...attributes}
       style={style}
+      onClick={onClick}
       className="flex items-center justify-between px-4 py-3 hover:bg-gray-50 cursor-grab"
     >
       <div className="flex items-center gap-3">
