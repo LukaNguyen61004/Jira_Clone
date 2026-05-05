@@ -2,7 +2,7 @@ import express, { Application, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import redis from './config/redis'
-import cookieParse from 'cookie-parser';
+import cookieParser from 'cookie-parser';
 import authRoutes from './routes/authRoutes';
 import projectRoutes from './routes/projectRoutes';
 import issueRoutes from './routes/issueRoutes';
@@ -23,9 +23,9 @@ app.use(cors({
   credentials: true
 }));
 
-app.options('/*', cors());
+
 app.use(express.json());
-app.use(cookieParse());
+app.use(cookieParser());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
