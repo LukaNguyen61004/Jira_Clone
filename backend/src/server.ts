@@ -22,6 +22,8 @@ app.use(cors({
            'https://jira-clone-zeta-lovat.vercel.app'],
   credentials: true
 }));
+
+app.options('*', cors());
 app.use(express.json());
 app.use(cookieParse());
 
